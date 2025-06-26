@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Simple destroy script for development container
+
+# Colors
+readonly GREEN='\033[0;32m'
+readonly BLUE='\033[0;34m'
+readonly RED='\033[0;31m'
+readonly NC='\033[0m'
+
+log_info() { echo -e "${BLUE}[INFO]${NC} $*"; }
+log_success() { echo -e "${GREEN}[SUCCESS]${NC} $*"; }
+
+echo -e "${RED}WARNING: This will destroy the container and all non-volume data!${NC}"
+read -p "Are you sure? (y/N): " -n 1 -r
+echo
+
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    log_info "Destroying container..."
+    docker-compose down -v
+    log_success "Container destroyed"
+else
+    log_info "Operation cancelled"
+fi 
